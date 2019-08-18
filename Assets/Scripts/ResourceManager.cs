@@ -10,8 +10,10 @@ public class ResourceManager : MonoBehaviour
     public static ResourceManager Instance { get { return _instance; } }
 
     public Character characterPrefab;
+    public Item itemPrefab;
     public CharacterInfoScriptableObject[] playerSideCharacters;
     public CharacterInfoScriptableObject[] enemySideCharacters;
+    public ItemInfoScriptableObject[] items;
 
     private void Awake()
     {
@@ -29,7 +31,7 @@ public class ResourceManager : MonoBehaviour
     public Character GeneratePlayerSnake(bool isHead)
     {
         Character newCharacter = GameObject.Instantiate(characterPrefab);
-        newCharacter.Setup(playerSideCharacters[Random.Range(0, playerSideCharacters.Length)]);
+        newCharacter.Setup(playerSideCharacters[Random.Range(0, playerSideCharacters.Length)], CharacterStatus.Player);
 
         //Add PlayerSnake Component
         PlayerSnake playerSnakeComponent = newCharacter.gameObject.AddComponent<PlayerSnake>();
@@ -40,14 +42,21 @@ public class ResourceManager : MonoBehaviour
     public Character GenerateEnemy()
     {
         Character newCharacter = GameObject.Instantiate(characterPrefab);
-        newCharacter.Setup(enemySideCharacters[Random.Range(0, enemySideCharacters.Length)]);
+        newCharacter.Setup(enemySideCharacters[Random.Range(0, enemySideCharacters.Length)], CharacterStatus.Enemy);
         return newCharacter;
     }
 
-    public Character GenerateAlly()
+    public Character GenerateHero()
     {
         Character newCharacter = GameObject.Instantiate(characterPrefab);
-        newCharacter.Setup(playerSideCharacters[Random.Range(0, playerSideCharacters.Length)]);
+        newCharacter.Setup(playerSideCharacters[Random.Range(0, playerSideCharacters.Length)], CharacterStatus.Hero);
         return newCharacter;
+    }
+
+    public Item GenerateItem()
+    {
+        Item newItem = GameObject.Instantiate(itemPrefab);
+        newItem.Setup(items[Random.Range(0, items.Length)]);
+        return newItem;
     }
 }

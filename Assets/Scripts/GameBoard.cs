@@ -46,7 +46,12 @@ public class GameBoard : MonoBehaviour
         //throw new NotImplementedException();
     }
 
-    public void SpawnAnAlly()
+    public void SpawnAHero()
+    {
+        //throw new NotImplementedException();
+    }
+
+    public void SpawnAnItem()
     {
         //throw new NotImplementedException();
     }

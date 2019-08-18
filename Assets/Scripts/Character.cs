@@ -4,13 +4,24 @@ using UnityEngine;
 
 public class Character : Entity
 {
-    public CharacterInfoScriptableObject characterScriptableObject;
+    public CharacterInfoScriptableObject characterInfoScriptableObject;
+    public CharacterStatus characterStatus;
 
     //Called by ResourceManager
-    public virtual void Setup(CharacterInfoScriptableObject characterInfoScriptableObject)
+    public void Setup(CharacterInfoScriptableObject characterInfoScriptableObject, CharacterStatus characterStatus)
     {
-        this.characterScriptableObject = characterInfoScriptableObject;
-        spriteRenderer.sprite = characterInfoScriptableObject.sprite;
-        //Stats ....
+        //All entity subclass must call this first
+        base.Setup(characterInfoScriptableObject);
+
+        this.characterInfoScriptableObject = characterInfoScriptableObject;
+        this.characterStatus = characterStatus;
+        //Stats, etc...
     }
+}
+
+public enum CharacterStatus
+{
+    Player,
+    Hero,
+    Enemy
 }

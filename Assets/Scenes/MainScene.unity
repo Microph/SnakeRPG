@@ -1179,10 +1179,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterPrefab: {fileID: 8118981726543847020, guid: 64af1e02f460fc34f9c82d2768233337,
     type: 3}
+  itemPrefab: {fileID: 0}
   playerSideCharacters:
   - {fileID: 11400000, guid: b72c105ad21889e45a18767ac258256e, type: 2}
   enemySideCharacters:
   - {fileID: 11400000, guid: e69f20510fb1c084c978266ff044c1a9, type: 2}
+  items:
+  - {fileID: 11400000, guid: c67d08d867b621749a76decc49879657, type: 2}
 --- !u!4 &205954468
 Transform:
   m_ObjectHideFlags: 0

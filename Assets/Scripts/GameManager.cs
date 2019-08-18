@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
         gameBoard.SetupNewTiles(10, 19);
         gameBoard.SpawnPlayer_StartGame();
         gameBoard.SpawnEnemy_StartGame();
-        gameBoard.SpawnAnAlly();
+        gameBoard.SpawnAHero();
     }
 
     void Update()
