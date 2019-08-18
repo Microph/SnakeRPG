@@ -7,6 +7,9 @@ public class GameManager : MonoBehaviour
 {
     public GameBoard gameBoard_inScene;
 
+    private float timeIncrementer;
+    private float moveInterval;
+
     void Start()
     {
         SetupNewGame(gameBoard_inScene);
@@ -18,11 +21,26 @@ public class GameManager : MonoBehaviour
         gameBoard.SpawnPlayer_StartGame();
         gameBoard.SpawnEnemy_StartGame();
         gameBoard.SpawnAHero();
+
+        //Initilize timers
+        timeIncrementer = 0;
+        moveInterval = 1;
     }
 
     void Update()
     {
+        //Update tick
+        timeIncrementer += Time.deltaTime;
 
+        if(timeIncrementer < moveInterval)
+        {
+            return;
+        }
+        else
+        {
+            timeIncrementer = 0;
+            gameBoard_inScene.UpdatePlayerSnake();
+        }
     }
 
 }

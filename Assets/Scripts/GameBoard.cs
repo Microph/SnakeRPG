@@ -8,7 +8,8 @@ public class GameBoard : MonoBehaviour
     public Tile[,] tiles;
     public Transform zeroZeroTilePos, zeroOneTilePos;
 
-    private PlayerSnake playerSnakeHead;
+    private Character playerCharacterHead;
+    private PlayerSnakeComponent playerSnakeComponent;
 
     //Must always happen first
     public void SetupNewTiles(int rows, int columns)
@@ -26,19 +27,17 @@ public class GameBoard : MonoBehaviour
 
     public void SpawnPlayer_StartGame()
     {
-        Character startingPlayerCharacter = ResourceManager.Instance.GeneratePlayerSnake(true);
-        tiles[1, 5].occupiedEntity = startingPlayerCharacter;
-
-        playerSnakeHead = startingPlayerCharacter.GetComponent<PlayerSnake>();
-        playerSnakeHead.transform.position = tiles[1, 5].worldPosition;
+        playerCharacterHead = ResourceManager.Instance.GeneratePlayerSnake(true, 1, 4);
+        playerSnakeComponent = playerCharacterHead.GetComponent<PlayerSnakeComponent>();
+        MovePlayerSnakePart(playerCharacterHead, FacingDirection.Right);
     }
 
     //Fix first position to prevent spawning right next to player
     public void SpawnEnemy_StartGame()
     {
         Character newEnemy = ResourceManager.Instance.GenerateEnemy();
-        tiles[7, 11].occupiedEntity = newEnemy;
-        newEnemy.transform.position = tiles[7, 11].worldPosition;
+        tiles[7, 13].occupiedEntity = newEnemy;
+        newEnemy.transform.position = tiles[7, 13].worldPosition;
     }
 
     public void SpawnAnEnemy()
@@ -54,6 +53,51 @@ public class GameBoard : MonoBehaviour
     public void SpawnAnItem()
     {
         //throw new NotImplementedException();
+    }
+
+    public void UpdatePlayerSnake()
+    {
+        //TODO: verify to-be tile before move
+        MovePlayerSnakePart(playerCharacterHead, playerCharacterHead.lastMoveFacingDirection);
+    }
+
+    private void MovePlayerSnakePart(Character aPart, FacingDirection toBe_FacingDirection)
+    {
+        int iRow = 0, iCol = 0;
+        switch (playerCharacterHead.lastMoveFacingDirection)
+        {
+            case FacingDirection.Right:
+                iRow = 0;
+                iCol = 1;
+                break;
+            case FacingDirection.Down:
+                iRow = -1;
+                iCol = 0;
+                break;
+            case FacingDirection.Left:
+                iRow = 0;
+                iCol = -1;
+                break;
+            case FacingDirection.Up:
+                iRow = 1;
+                iCol = 0;
+                break;
+        }
+
+        PlayerSnakeComponent snakeComponent = aPart.GetComponent<PlayerSnakeComponent>();
+        int toBeRow = snakeComponent.currentRow + iRow;
+        int toBeCol = snakeComponent.currentCol + iCol;
+        tiles[toBeRow, toBeCol].occupiedEntity = aPart;
+        tiles[snakeComponent.currentRow, snakeComponent.currentCol].occupiedEntity = null;
+        aPart.transform.position = tiles[toBeRow, toBeCol].worldPosition;
+        snakeComponent.currentRow = toBeRow;
+        snakeComponent.currentCol = toBeCol;
+
+        if (snakeComponent.nextLinkedPartRow != -1)
+        {
+            MovePlayerSnakePart((Character)tiles[snakeComponent.nextLinkedPartRow, snakeComponent.nextLinkedPartCol].occupiedEntity, aPart.lastMoveFacingDirection);
+        }
+        aPart.lastMoveFacingDirection = toBe_FacingDirection;
     }
 
     //--------------------------------Utility------------------------------------------//

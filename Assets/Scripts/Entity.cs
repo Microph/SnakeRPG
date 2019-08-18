@@ -5,12 +5,12 @@ using UnityEngine;
 public class Entity : MonoBehaviour
 {
     public SpriteRenderer spriteRenderer;
-    public FacingDirection facingDirection;
+    public FacingDirection lastMoveFacingDirection;
 
     protected void Setup(EntityScriptableObject entityScriptableObject, FacingDirection facingDirection = FacingDirection.Right)
     {
         spriteRenderer.sprite = entityScriptableObject.sprite;
-        this.facingDirection = facingDirection;
+        this.lastMoveFacingDirection = facingDirection;
     }
 }
 

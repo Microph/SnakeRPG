@@ -28,14 +28,14 @@ public class ResourceManager : MonoBehaviour
         }
     }
 
-    public Character GeneratePlayerSnake(bool isHead)
+    public Character GeneratePlayerSnake(bool isHead, int atRow, int atCol)
     {
         Character newCharacter = GameObject.Instantiate(characterPrefab);
         newCharacter.Setup(playerSideCharacters[Random.Range(0, playerSideCharacters.Length)], CharacterStatus.Player);
 
         //Add PlayerSnake Component
-        PlayerSnake playerSnakeComponent = newCharacter.gameObject.AddComponent<PlayerSnake>();
-        playerSnakeComponent.Setup(isHead, null);
+        PlayerSnakeComponent playerSnakeComponent = newCharacter.gameObject.AddComponent<PlayerSnakeComponent>();
+        playerSnakeComponent.Setup(isHead, atRow, atCol);
         return newCharacter;
     }
 
