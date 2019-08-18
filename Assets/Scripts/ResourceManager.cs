@@ -11,8 +11,8 @@ public class ResourceManager : MonoBehaviour
 
     public Character characterPrefab;
     public Item itemPrefab;
-    public CharacterInfoScriptableObject[] playerSideCharacters;
-    public CharacterInfoScriptableObject[] enemySideCharacters;
+    public CharacterInfoScriptableObject[] heroCharacters;
+    public CharacterInfoScriptableObject[] enemyCharacters;
     public ItemInfoScriptableObject[] items;
 
     private void Awake()
@@ -31,7 +31,7 @@ public class ResourceManager : MonoBehaviour
     public Character GeneratePlayerSnake(bool isHead, int atRow, int atCol)
     {
         Character newCharacter = GameObject.Instantiate(characterPrefab);
-        newCharacter.Setup(playerSideCharacters[Random.Range(0, playerSideCharacters.Length)], CharacterStatus.Player);
+        newCharacter.Setup(heroCharacters[Random.Range(0, heroCharacters.Length)], CharacterStatus.Player);
 
         //Add PlayerSnake Component
         PlayerSnakeComponent playerSnakeComponent = newCharacter.gameObject.AddComponent<PlayerSnakeComponent>();
@@ -42,14 +42,14 @@ public class ResourceManager : MonoBehaviour
     public Character GenerateEnemy()
     {
         Character newCharacter = GameObject.Instantiate(characterPrefab);
-        newCharacter.Setup(enemySideCharacters[Random.Range(0, enemySideCharacters.Length)], CharacterStatus.Enemy);
+        newCharacter.Setup(enemyCharacters[Random.Range(0, enemyCharacters.Length)], CharacterStatus.Enemy);
         return newCharacter;
     }
 
     public Character GenerateHero()
     {
         Character newCharacter = GameObject.Instantiate(characterPrefab);
-        newCharacter.Setup(playerSideCharacters[Random.Range(0, playerSideCharacters.Length)], CharacterStatus.Hero);
+        newCharacter.Setup(heroCharacters[Random.Range(0, heroCharacters.Length)], CharacterStatus.Hero);
         return newCharacter;
     }
 

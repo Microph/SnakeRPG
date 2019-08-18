@@ -25,11 +25,12 @@ public class GameBoard : MonoBehaviour
         }
     }
 
+    //--------------------------------Spawning------------------------------------------//
     public void SpawnPlayer_StartGame()
     {
         playerCharacterHead = ResourceManager.Instance.GeneratePlayerSnake(true, 1, 4);
         playerSnakeComponent = playerCharacterHead.GetComponent<PlayerSnakeComponent>();
-        MovePlayerSnakePart(playerCharacterHead, FacingDirection.Right);
+        MoveASnakePart(playerCharacterHead, FacingDirection.Right, 1, 5);
     }
 
     //Fix first position to prevent spawning right next to player
@@ -42,29 +43,89 @@ public class GameBoard : MonoBehaviour
 
     public void SpawnAnEnemy()
     {
-        //throw new NotImplementedException();
+        Character newEnemy = ResourceManager.Instance.GenerateEnemy();
+        Tile tile = GetARandomUnoccupiedTile();
+        tile.occupiedEntity = newEnemy;
+        newEnemy.transform.position = tile.worldPosition;
     }
 
     public void SpawnAHero()
     {
-        //throw new NotImplementedException();
+        Character newHero = ResourceManager.Instance.GenerateHero();
+        Tile tile = GetARandomUnoccupiedTile();
+        tile.occupiedEntity = newHero;
+        newHero.transform.position = tile.worldPosition;
     }
 
     public void SpawnAnItem()
     {
-        //throw new NotImplementedException();
+        Item newItem = ResourceManager.Instance.GenerateItem();
+        Tile tile = GetARandomUnoccupiedTile();
+        tile.occupiedEntity = newItem;
+        newItem.transform.position = tile.worldPosition;
     }
+    //--------------------------------Spawning------------------------------------------//
 
-    public void UpdatePlayerSnake()
+    public void UpdateBoardState()
     {
         //TODO: verify to-be tile before move
-        MovePlayerSnakePart(playerCharacterHead, playerCharacterHead.lastMoveFacingDirection);
+        Tuple<int, int> toBeIndex = CalculateToBeIndex(playerCharacterHead, playerSnakeComponent.facingDirectionFromInput);
+
+
+
+        MoveASnakePart(playerCharacterHead, playerSnakeComponent.facingDirectionFromInput, toBeIndex.Item1, toBeIndex.Item2);
     }
 
-    private void MovePlayerSnakePart(Character aPart, FacingDirection toBe_FacingDirection)
+    private void MoveASnakePart(Character aPart, FacingDirection toBe_FacingDirection, int toBeRow, int toBeCol)
+    {
+        PlayerSnakeComponent snakeComponent = aPart.GetComponent<PlayerSnakeComponent>();
+        tiles[toBeRow, toBeCol].occupiedEntity = aPart;
+        tiles[snakeComponent.currentRow, snakeComponent.currentCol].occupiedEntity = null;
+        snakeComponent.currentRow = toBeRow;
+        snakeComponent.currentCol = toBeCol;
+
+        //Update Position and Rotation
+        aPart.transform.position = tiles[toBeRow, toBeCol].worldPosition;
+        PlayerSnakeComponent.RotateSnakePart(aPart, toBe_FacingDirection);
+
+        if (snakeComponent.nextLinkedPartRow != -1)
+        {
+            Tuple<int, int> toBeIndex = CalculateToBeIndex(aPart, snakeComponent.facingDirectionFromInput);
+            MoveASnakePart((Character)tiles[snakeComponent.nextLinkedPartRow, snakeComponent.nextLinkedPartCol].occupiedEntity, aPart.lastMoveFacingDirection, toBeIndex.Item1, toBeIndex.Item2);
+        }
+        aPart.lastMoveFacingDirection = toBe_FacingDirection;
+    }
+
+    //--------------------------------Utility------------------------------------------//
+    public float GetTileSize()
+    {
+        return zeroOneTilePos.position.x - zeroZeroTilePos.position.x;
+    }
+
+    private Tile GetARandomUnoccupiedTile()
+    {
+        var list = GetUnoccupiedTileList();
+        return list[Random.Range(0, list.Count)];
+    }
+
+    private List<Tile> GetUnoccupiedTileList()
+    {
+        List<Tile> tileList = new List<Tile>();
+        foreach(Tile tile in tiles)
+        {
+            if(tile.occupiedEntity == null)
+            {
+                tileList.Add(tile);
+            }
+        }
+
+        return tileList;
+    } 
+
+    private Tuple<int, int> CalculateToBeIndex(Character character, FacingDirection toBe_FacingDirection)
     {
         int iRow = 0, iCol = 0;
-        switch (playerCharacterHead.lastMoveFacingDirection)
+        switch (toBe_FacingDirection)
         {
             case FacingDirection.Right:
                 iRow = 0;
@@ -83,46 +144,11 @@ public class GameBoard : MonoBehaviour
                 iCol = 0;
                 break;
         }
-
-        PlayerSnakeComponent snakeComponent = aPart.GetComponent<PlayerSnakeComponent>();
+        PlayerSnakeComponent snakeComponent = character.GetComponent<PlayerSnakeComponent>();
         int toBeRow = snakeComponent.currentRow + iRow;
         int toBeCol = snakeComponent.currentCol + iCol;
-        tiles[toBeRow, toBeCol].occupiedEntity = aPart;
-        tiles[snakeComponent.currentRow, snakeComponent.currentCol].occupiedEntity = null;
-        aPart.transform.position = tiles[toBeRow, toBeCol].worldPosition;
-        snakeComponent.currentRow = toBeRow;
-        snakeComponent.currentCol = toBeCol;
 
-        if (snakeComponent.nextLinkedPartRow != -1)
-        {
-            MovePlayerSnakePart((Character)tiles[snakeComponent.nextLinkedPartRow, snakeComponent.nextLinkedPartCol].occupiedEntity, aPart.lastMoveFacingDirection);
-        }
-        aPart.lastMoveFacingDirection = toBe_FacingDirection;
+        return new Tuple<int, int>(toBeRow, toBeCol);
     }
-
     //--------------------------------Utility------------------------------------------//
-    public Tile GetARandomUnoccupiedTile()
-    {
-        var list = GetUnoccupiedTileList();
-        return list[Random.Range(0, list.Count)];
-    }
-
-    public List<Tile> GetUnoccupiedTileList()
-    {
-        List<Tile> tileList = new List<Tile>();
-        foreach(Tile tile in tiles)
-        {
-            if(tile.occupiedEntity == null)
-            {
-                tileList.Add(tile);
-            }
-        }
-
-        return tileList;
-    } 
-
-    public float GetTileSize()
-    {
-        return zeroOneTilePos.position.x - zeroZeroTilePos.position.x;
-    }
 }

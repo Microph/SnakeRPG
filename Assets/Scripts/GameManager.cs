@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
         else
         {
             timeIncrementer = 0;
-            gameBoard_inScene.UpdatePlayerSnake();
+            gameBoard_inScene.UpdateBoardState();
         }
     }
 
