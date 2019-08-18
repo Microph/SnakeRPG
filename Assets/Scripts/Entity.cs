@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IEntity
+public class Entity : MonoBehaviour
 {
-    
+    public SpriteRenderer spriteRenderer;
+    public FacingDirection facingDirection;
 }
 
 public enum FacingDirection

@@ -5,10 +5,11 @@ using UnityEngine;
 public class Tile
 {
     public Vector2 worldPosition;
-    public IEntity occupiedEntity;
+    public Entity occupiedEntity;
 
-    public Tile(Vector2 worldPosition, IEntity occupiedEntity = null)
+    public Tile(Vector2 worldPosition, Entity occupiedEntity = null)
     {
         this.worldPosition = worldPosition;
+        this.occupiedEntity = occupiedEntity;
     }
 }
