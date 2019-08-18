@@ -21,6 +21,9 @@ public class GameManager : MonoBehaviour
         gameBoard.SpawnPlayer_StartGame();
         gameBoard.SpawnEnemy_StartGame();
         gameBoard.SpawnAHero();
+        gameBoard.SpawnAHero();
+        gameBoard.SpawnAHero();
+        gameBoard.SpawnAHero();
 
         //Initilize timers
         timeIncrementer = 0;

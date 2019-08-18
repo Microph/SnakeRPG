@@ -70,10 +70,24 @@ public class GameBoard : MonoBehaviour
     {
         //TODO: verify to-be tile before move
         Tuple<int, int> toBeIndex = CalculateToBeIndex(playerCharacterHead, playerSnakeComponent.facingDirectionFromInput);
+        if (tiles[toBeIndex.Item1, toBeIndex.Item2].occupiedEntity is Character characterCheck)
+        {
+            //TODO: Get the ally to back next tick instead
+            Character stashedHero = characterCheck;
+            stashedHero.spriteRenderer.flipX = playerCharacterHead.spriteRenderer.flipX;
+            int stashedRow = playerSnakeComponent.currentRow, stashedCol = playerSnakeComponent.currentCol;
 
+            MoveASnakePart(playerCharacterHead, playerSnakeComponent.facingDirectionFromInput, toBeIndex.Item1, toBeIndex.Item2);
 
-
-        MoveASnakePart(playerCharacterHead, playerSnakeComponent.facingDirectionFromInput, toBeIndex.Item1, toBeIndex.Item2);
+            tiles[stashedRow, stashedCol].occupiedEntity = stashedHero;
+            stashedHero.transform.position = tiles[stashedRow, stashedCol].worldPosition;
+            stashedHero.lastMoveFacingDirection = playerCharacterHead.lastMoveFacingDirection;
+            PlayerSnakeComponent.RotateSnakePart(stashedHero, stashedHero.lastMoveFacingDirection);
+        }
+        else
+        {
+            MoveASnakePart(playerCharacterHead, playerSnakeComponent.facingDirectionFromInput, toBeIndex.Item1, toBeIndex.Item2);
+        }
     }
 
     private void MoveASnakePart(Character aPart, FacingDirection toBe_FacingDirection, int toBeRow, int toBeCol)
@@ -88,6 +102,7 @@ public class GameBoard : MonoBehaviour
         aPart.transform.position = tiles[toBeRow, toBeCol].worldPosition;
         PlayerSnakeComponent.RotateSnakePart(aPart, toBe_FacingDirection);
 
+        //Recursion
         if (snakeComponent.nextLinkedPartRow != -1)
         {
             Tuple<int, int> toBeIndex = CalculateToBeIndex(aPart, snakeComponent.facingDirectionFromInput);
