@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
 
         //Initilize timers
         timeIncrementer = 0;
-        moveInterval = 1;
+        moveInterval = 0.33f;
     }
 
     void Update()

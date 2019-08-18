@@ -25,7 +25,7 @@ public class GameBoard : MonoBehaviour
         }
     }
 
-    //--------------------------------Spawning------------------------------------------//
+    #region Spawning
     public void SpawnPlayer_StartGame()
     {
         playerCharacterHead = ResourceManager.Instance.GeneratePlayerSnake(true, 1, 4);
@@ -64,7 +64,7 @@ public class GameBoard : MonoBehaviour
         tile.occupiedEntity = newItem;
         newItem.transform.position = tile.worldPosition;
     }
-    //--------------------------------Spawning------------------------------------------//
+    #endregion
 
     public void UpdateBoardState()
     {
@@ -73,45 +73,58 @@ public class GameBoard : MonoBehaviour
         if (tiles[toBeIndex.Item1, toBeIndex.Item2].occupiedEntity is Character characterCheck)
         {
             //TODO: Get the ally to back next tick instead
-            Character stashedHero = characterCheck;
-            stashedHero.spriteRenderer.flipX = playerCharacterHead.spriteRenderer.flipX;
-            int stashedRow = playerSnakeComponent.currentRow, stashedCol = playerSnakeComponent.currentCol;
+            PlayerSnakeComponent lastPartSnakeComponent = GetLastPartFromHead(playerSnakeComponent);
+            Character lastPlayerPart = lastPartSnakeComponent.GetComponent<Character>();
 
+            Character stashedHero = characterCheck;
+            stashedHero.spriteRenderer.flipX = lastPlayerPart.spriteRenderer.flipX;
+            int stashedRow = lastPartSnakeComponent.currentRow;
+            int stashedCol = lastPartSnakeComponent.currentCol;
+
+            //Move first then place newly gen at the last line //will be change to add next tick
             MoveASnakePart(playerCharacterHead, playerSnakeComponent.facingDirectionFromInput, toBeIndex.Item1, toBeIndex.Item2);
 
             tiles[stashedRow, stashedCol].occupiedEntity = stashedHero;
             stashedHero.transform.position = tiles[stashedRow, stashedCol].worldPosition;
-            stashedHero.lastMoveFacingDirection = playerCharacterHead.lastMoveFacingDirection;
+            stashedHero.lastMoveFacingDirection = lastPlayerPart.lastMoveFacingDirection;
             PlayerSnakeComponent.RotateSnakePart(stashedHero, stashedHero.lastMoveFacingDirection);
+
+            PlayerSnakeComponent newSnakeComponent = stashedHero.gameObject.AddComponent<PlayerSnakeComponent>();
+            newSnakeComponent.Setup(false, stashedRow, stashedCol);
+
+            lastPartSnakeComponent.nextLinkedPartRow = stashedRow;
+            lastPartSnakeComponent.nextLinkedPartCol = stashedCol;
         }
         else
         {
             MoveASnakePart(playerCharacterHead, playerSnakeComponent.facingDirectionFromInput, toBeIndex.Item1, toBeIndex.Item2);
         }
     }
-
-    private void MoveASnakePart(Character aPart, FacingDirection toBe_FacingDirection, int toBeRow, int toBeCol)
+    
+    private void MoveASnakePart(Character aPlayerPart, FacingDirection toBe_FacingDirection, int toBeRow, int toBeCol)
     {
-        PlayerSnakeComponent snakeComponent = aPart.GetComponent<PlayerSnakeComponent>();
-        tiles[toBeRow, toBeCol].occupiedEntity = aPart;
+        PlayerSnakeComponent snakeComponent = aPlayerPart.GetComponent<PlayerSnakeComponent>();
+        tiles[toBeRow, toBeCol].occupiedEntity = aPlayerPart;
         tiles[snakeComponent.currentRow, snakeComponent.currentCol].occupiedEntity = null;
-        snakeComponent.currentRow = toBeRow;
-        snakeComponent.currentCol = toBeCol;
-
         //Update Position and Rotation
-        aPart.transform.position = tiles[toBeRow, toBeCol].worldPosition;
-        PlayerSnakeComponent.RotateSnakePart(aPart, toBe_FacingDirection);
+        aPlayerPart.transform.position = tiles[toBeRow, toBeCol].worldPosition;
+        PlayerSnakeComponent.RotateSnakePart(aPlayerPart, toBe_FacingDirection);
 
         //Recursion
         if (snakeComponent.nextLinkedPartRow != -1)
         {
-            Tuple<int, int> toBeIndex = CalculateToBeIndex(aPart, snakeComponent.facingDirectionFromInput);
-            MoveASnakePart((Character)tiles[snakeComponent.nextLinkedPartRow, snakeComponent.nextLinkedPartCol].occupiedEntity, aPart.lastMoveFacingDirection, toBeIndex.Item1, toBeIndex.Item2);
+            Character nextPart = (Character)tiles[snakeComponent.nextLinkedPartRow, snakeComponent.nextLinkedPartCol].occupiedEntity;
+            snakeComponent.nextLinkedPartRow = snakeComponent.currentRow;
+            snakeComponent.nextLinkedPartCol = snakeComponent.currentCol;
+            MoveASnakePart(nextPart, aPlayerPart.lastMoveFacingDirection, snakeComponent.currentRow, snakeComponent.currentCol);
         }
-        aPart.lastMoveFacingDirection = toBe_FacingDirection;
+
+        snakeComponent.currentRow = toBeRow;
+        snakeComponent.currentCol = toBeCol;
+        aPlayerPart.lastMoveFacingDirection = toBe_FacingDirection;
     }
 
-    //--------------------------------Utility------------------------------------------//
+    #region Utility
     public float GetTileSize()
     {
         return zeroOneTilePos.position.x - zeroZeroTilePos.position.x;
@@ -165,5 +178,17 @@ public class GameBoard : MonoBehaviour
 
         return new Tuple<int, int>(toBeRow, toBeCol);
     }
-    //--------------------------------Utility------------------------------------------//
+
+    private PlayerSnakeComponent GetLastPartFromHead(PlayerSnakeComponent playerSnakeComponent)
+    {
+        if (playerSnakeComponent.nextLinkedPartRow == -1 && playerSnakeComponent.nextLinkedPartCol == -1)
+        {
+            return playerSnakeComponent;
+        }
+        else
+        {
+            return GetLastPartFromHead(tiles[playerSnakeComponent.nextLinkedPartRow, playerSnakeComponent.nextLinkedPartCol].occupiedEntity.GetComponent<PlayerSnakeComponent>());
+        }
+    }
+    #endregion
 }
