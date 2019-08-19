@@ -6,20 +6,18 @@ using UnityEngine;
 public class PlayerSnakeComponent : MonoBehaviour
 {
     public bool isHead = false;
-    public int currentRow, currentCol;
-    public int nextLinkedPartRow, nextLinkedPartCol;
+    public Tuple<int, int> currentIndex;
+    public Tuple<int, int> nextLinkedIndex;
     public FacingDirection facingDirectionFromInput;
 
     private Character characterScript;
 
     //Called by ResourceManager
-    public void Setup(bool isHead, int currentRow, int currentCol, int nextLinkedPartRow = -1, int nextLinkedPartCol = -1)
+    public void Setup(bool isHead, Tuple<int, int> currentIndex, Tuple<int, int> nextLinkedIndex = null)
     {
         this.isHead = isHead;
-        this.currentRow = currentRow;
-        this.currentCol = currentCol;
-        this.nextLinkedPartRow = nextLinkedPartRow;
-        this.nextLinkedPartCol = nextLinkedPartCol;
+        this.currentIndex = currentIndex;
+        this.nextLinkedIndex = nextLinkedIndex ?? new Tuple<int, int>(-1, -1);
     }
 
     private void Start()
