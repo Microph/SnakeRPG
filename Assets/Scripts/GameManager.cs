@@ -5,14 +5,28 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public GameBoard gameBoard_inScene;
+    private static GameManager _instance;
+    public static GameManager Instance { get { return _instance; } }
 
     private float timeIncrementer;
     private float moveInterval;
 
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+    }
+
     void Start()
     {
-        SetupNewGame(gameBoard_inScene);
+        SetupNewGame(GameBoard.Instance);
     }
 
     private void SetupNewGame(GameBoard gameBoard)
@@ -42,7 +56,7 @@ public class GameManager : MonoBehaviour
         else
         {
             timeIncrementer = 0;
-            gameBoard_inScene.UpdateBoardState();
+            GameBoard.Instance.UpdateBoardState();
         }
     }
 

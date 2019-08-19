@@ -31,7 +31,7 @@ public class ResourceManager : MonoBehaviour
     public Character GeneratePlayerSnake(bool isHead, Tuple<int, int> atIndex)
     {
         Character newCharacter = GameObject.Instantiate(characterPrefab);
-        newCharacter.Setup(heroCharacters[Random.Range(0, heroCharacters.Length)], CharacterStatus.Player);
+        newCharacter.Setup(heroCharacters[Random.Range(0, heroCharacters.Length)], CharacterSide.PlayerSnake);
 
         //Add PlayerSnake Component
         PlayerSnakeComponent playerSnakeComponent = newCharacter.gameObject.AddComponent<PlayerSnakeComponent>();
@@ -42,14 +42,14 @@ public class ResourceManager : MonoBehaviour
     public Character GenerateEnemy()
     {
         Character newCharacter = GameObject.Instantiate(characterPrefab);
-        newCharacter.Setup(enemyCharacters[Random.Range(0, enemyCharacters.Length)], CharacterStatus.Enemy);
+        newCharacter.Setup(enemyCharacters[Random.Range(0, enemyCharacters.Length)], CharacterSide.Enemy);
         return newCharacter;
     }
 
     public Character GenerateHero()
     {
         Character newCharacter = GameObject.Instantiate(characterPrefab);
-        newCharacter.Setup(heroCharacters[Random.Range(0, heroCharacters.Length)], CharacterStatus.Hero);
+        newCharacter.Setup(heroCharacters[Random.Range(0, heroCharacters.Length)], CharacterSide.Hero);
         return newCharacter;
     }
 

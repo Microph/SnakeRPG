@@ -5,45 +5,64 @@ using UnityEngine;
 
 public class PlayerSnakeComponent : MonoBehaviour
 {
-    public bool isHead = false;
+    private bool _isHead = false;
+
     public Tuple<int, int> currentIndex;
-    public Tuple<int, int> nextLinkedIndex;
+    public PlayerSnakeComponent nextLinkedSnakePart;
     public FacingDirection facingDirectionFromInput;
 
-    private Character characterScript;
-
-    //Called by ResourceManager
-    public void Setup(bool isHead, Tuple<int, int> currentIndex, Tuple<int, int> nextLinkedIndex = null)
+    public bool IsHead
     {
-        this.isHead = isHead;
-        this.currentIndex = currentIndex;
-        this.nextLinkedIndex = nextLinkedIndex ?? new Tuple<int, int>(-1, -1);
-    }
-
-    private void Start()
-    {
-        characterScript = GetComponent<Character>();
-        if (isHead)
+        get => _isHead;
+        set
         {
-            UnityEventManager.Instance.DirectionInputEvent.AddListener(RotateSnakeHead);
+            _isHead = value;
+            if (IsHead)
+            {
+                UnityEventManager.Instance.DirectionInputEvent.AddListener(RotateSnakeHead);
+            }
+            else
+            {
+                UnityEventManager.Instance.DirectionInputEvent.RemoveListener(RotateSnakeHead);
+            }
         }
     }
 
-    private void OnDisable()
+    //Called by ResourceManager
+    public void Setup(bool isHead, Tuple<int, int> currentIndex, PlayerSnakeComponent nextLinkedSnakePart = null)
+    {
+        this.IsHead = isHead;
+        this.currentIndex = currentIndex;
+        this.nextLinkedSnakePart = nextLinkedSnakePart;
+    }
+
+    private void OnDestroy()
     {
         UnityEventManager.Instance.DirectionInputEvent.RemoveListener(RotateSnakeHead);
     }
 
-    private void RotateSnakeHead(FacingDirection facingDirection)
+    //Listen to directional input event
+    private void RotateSnakeHead(FacingDirection toBeFacingDirection)
     {
-        RotateSnakePart(characterScript, facingDirection);
-        facingDirectionFromInput = facingDirection;
+        Character character = GetComponent<Character>();
 
+        //Prevent 180 turn to hit its second part
+        if (nextLinkedSnakePart != null)
+        {
+            Tuple<int, int> toBeIndex = GameBoard.Instance.CalculateToBeIndex(character, toBeFacingDirection);
+            if((toBeIndex.Equals(nextLinkedSnakePart.currentIndex)))
+            {
+                return;
+            }
+        }
+
+        RotateCharacter(character, toBeFacingDirection);
+        facingDirectionFromInput = toBeFacingDirection;
     }
 
-    public static void RotateSnakePart(Character characterScript, FacingDirection facingDirection)
+    public static void RotateCharacter(Character characterScript, FacingDirection toBeFacingDirection)
     {
-        switch (facingDirection)
+        switch (toBeFacingDirection)
         {
             case FacingDirection.Right:
                 characterScript.spriteRenderer.flipX = false;

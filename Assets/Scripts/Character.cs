@@ -5,23 +5,23 @@ using UnityEngine;
 public class Character : Entity
 {
     public CharacterInfoScriptableObject characterInfoScriptableObject;
-    public CharacterStatus characterStatus;
+    public CharacterSide characterSide;
 
     //Called by ResourceManager
-    public void Setup(CharacterInfoScriptableObject characterInfoScriptableObject, CharacterStatus characterStatus)
+    public void Setup(CharacterInfoScriptableObject characterInfoScriptableObject, CharacterSide characterSide)
     {
         //All entity subclass must call this first
         base.Setup(characterInfoScriptableObject);
 
         this.characterInfoScriptableObject = characterInfoScriptableObject;
-        this.characterStatus = characterStatus;
+        this.characterSide = characterSide;
         //Stats, etc...
     }
 }
 
-public enum CharacterStatus
+public enum CharacterSide
 {
-    Player,
+    PlayerSnake,
     Hero,
     Enemy
 }
