@@ -50,3 +50,6 @@ TagManager:
   - name: Stats
     uniqueID: 3011406045
     locked: 0
+  - name: UI
+    uniqueID: 468148751
+    locked: 0

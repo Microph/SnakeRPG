@@ -13,12 +13,11 @@ public class UnityEventManager : MonoBehaviour
         _instance = this;
 
         //Initialize events
-        if(DirectionInputEvent == null)
-        {
-            DirectionInputEvent = new DirectionInputEventClass();
-        }
+        SwitchSnakeInputEvent = new UnityEvent();
+        DirectionInputEvent = new DirectionInputEventClass();
     }
-    
+
+    public UnityEvent SwitchSnakeInputEvent;
     public DirectionInputEventClass DirectionInputEvent;
 }
 

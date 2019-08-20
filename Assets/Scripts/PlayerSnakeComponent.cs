@@ -20,10 +20,12 @@ public class PlayerSnakeComponent : MonoBehaviour
             if (IsHead)
             {
                 UnityEventManager.Instance.DirectionInputEvent.AddListener(RotateSnakeHead);
+                GetComponent<Character>().IsSnakeHead.enabled = true;
             }
             else
             {
                 UnityEventManager.Instance.DirectionInputEvent.RemoveListener(RotateSnakeHead);
+                GetComponent<Character>().IsSnakeHead.enabled = false;
             }
         }
     }

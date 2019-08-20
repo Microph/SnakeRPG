@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 36e2c212747a771478b519d1acceb561, type: 3}
-  m_Name: 1
+  m_Name: Potion
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300126, guid: 11869c22ced2bb54cbbd5d41d9c21c5c, type: 3}
-  hpModifier: 1
+  hpModifier: 2
   shieldModifier: 0
   atkModifier: 0

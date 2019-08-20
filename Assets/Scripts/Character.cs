@@ -10,6 +10,7 @@ public class Character : Entity
     public Text currentShieldText;
     public Text currentATKText;
     public Text currentCharacterSideText;
+    public Image IsSnakeHead;
 
     //Current stats
     private CharacterSide _currentCharacterSide;
