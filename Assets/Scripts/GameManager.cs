@@ -8,8 +8,8 @@ public class GameManager : MonoBehaviour
     private static GameManager _instance;
     public static GameManager Instance { get { return _instance; } }
 
-    private float timeIncrementer;
-    private float moveInterval;
+    private float _timeIncrementer;
+    private float _moveInterval;
 
     private void Awake()
     {
@@ -40,22 +40,22 @@ public class GameManager : MonoBehaviour
         gameBoard.SpawnAHero();
 
         //Initilize timers
-        timeIncrementer = 0;
-        moveInterval = 0.33f;
+        _timeIncrementer = 0;
+        _moveInterval = 0.33f;
     }
 
     void Update()
     {
         //Update tick
-        timeIncrementer += Time.deltaTime;
+        _timeIncrementer += Time.deltaTime;
 
-        if(timeIncrementer < moveInterval)
+        if(_timeIncrementer < _moveInterval)
         {
             return;
         }
         else
         {
-            timeIncrementer = 0;
+            _timeIncrementer = 0;
             GameBoard.Instance.UpdateBoardState();
         }
     }

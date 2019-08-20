@@ -47,3 +47,6 @@ TagManager:
   - name: Entity
     uniqueID: 3800058707
     locked: 0
+  - name: Stats
+    uniqueID: 3011406045
+    locked: 0
