@@ -23,4 +23,9 @@ public class TouchInputManager : MonoBehaviour
     {
         UnityEventManager.Instance.DirectionInputEvent.Invoke(FacingDirection.Left);
     }
+
+    public void InvokeSwitchSnake()
+    {
+        UnityEventManager.Instance.SwitchSnakeInputEvent.Invoke();
+    }
 }

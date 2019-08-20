@@ -2,7 +2,7 @@
 
 Controls
 - Arrow buttons for controlling the snake
-- Press UP&DOWN or LEFT&RIGHT at the same time to switch snake head
+- [PC: Press UP&DOWN or LEFT&RIGHT] [Mobile: Center Button] to switch snake head
 
 Stats on entity
 - Upper left: P=Player, H=Hero, E=Enemy, I=Item
