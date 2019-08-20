@@ -56,7 +56,6 @@ public class GameBoard : MonoBehaviour
 
         MoveAndMakeMeetingCharacterJoinTail(stashedPrevHeadCharacter, stashedPrevHeadCharacter.lastMoveFacingDirection, stashedPrevHeadIndex);
     }
-
     
     //Must always call first when start game
     public void SetupNewTiles(int rows, int columns)
@@ -233,30 +232,6 @@ public class GameBoard : MonoBehaviour
         PlayerSnakeComponent.RotateCharacter(meetingCharacter, meetingCharacter.lastMoveFacingDirection);
     }
 
-    private PlayerSnakeComponent GetLastSnakePart(PlayerSnakeComponent playerSnakeComponent)
-    {
-        if (playerSnakeComponent.nextLinkedSnakePart == null)
-        {
-            return playerSnakeComponent;
-        }
-        else
-        {
-            return GetLastSnakePart(playerSnakeComponent.nextLinkedSnakePart);
-        }
-    }
-
-    private int SumSnakeHP(PlayerSnakeComponent playerSnakeComponent)
-    {
-        if (playerSnakeComponent.nextLinkedSnakePart == null)
-        {
-            return playerSnakeComponent.GetComponent<Character>().CurrentHP;
-        }
-        else
-        {
-            return playerSnakeComponent.GetComponent<Character>().CurrentHP + SumSnakeHP(playerSnakeComponent.nextLinkedSnakePart);
-        }
-    }
-
     #region Spawning
     public void SpawnPlayer_StartGame()
     {
@@ -313,7 +288,18 @@ public class GameBoard : MonoBehaviour
     }
     #endregion
 
-    #region Public Methods
+    #region Utility Methods
+    public Tile GetARandomUnoccupiedTile()
+    {
+        var list = GetUnoccupiedTileList();
+        if (list.Count == 0)
+        {
+            return null;
+        }
+
+        return list[Random.Range(0, list.Count)];
+    }
+
     public float GetTileSize()
     {
         return zeroOneTilePos.position.x - zeroZeroTilePos.position.x;
@@ -329,30 +315,43 @@ public class GameBoard : MonoBehaviour
         return false;
     }
 
-    public Tile GetARandomUnoccupiedTile()
+    public PlayerSnakeComponent GetLastSnakePart(PlayerSnakeComponent playerSnakeComponent)
     {
-        var list = GetUnoccupiedTileList();
-        if(list.Count == 0)
+        if (playerSnakeComponent.nextLinkedSnakePart == null)
         {
-            return null;
+            return playerSnakeComponent;
         }
+        else
+        {
+            return GetLastSnakePart(playerSnakeComponent.nextLinkedSnakePart);
+        }
+    }
 
-        return list[Random.Range(0, list.Count)];
+    public int SumSnakeHP(PlayerSnakeComponent playerSnakeComponent)
+    {
+        if (playerSnakeComponent.nextLinkedSnakePart == null)
+        {
+            return playerSnakeComponent.GetComponent<Character>().CurrentHP;
+        }
+        else
+        {
+            return playerSnakeComponent.GetComponent<Character>().CurrentHP + SumSnakeHP(playerSnakeComponent.nextLinkedSnakePart);
+        }
     }
 
     public List<Tile> GetUnoccupiedTileList()
     {
         List<Tile> tileList = new List<Tile>();
-        foreach(Tile tile in tiles)
+        foreach (Tile tile in tiles)
         {
-            if(tile.occupiedEntity == null)
+            if (tile.occupiedEntity == null)
             {
                 tileList.Add(tile);
             }
         }
 
         return tileList;
-    } 
+    }
 
     public Tuple<int, int> CalculateToBeIndex(Character character, FacingDirection toBe_FacingDirection)
     {
@@ -378,8 +377,7 @@ public class GameBoard : MonoBehaviour
         }
         PlayerSnakeComponent snakeComponent = character.GetComponent<PlayerSnakeComponent>();
 
-        return new Tuple<int, int>(snakeComponent.currentIndex.Item1 + iRow , snakeComponent.currentIndex.Item2 + iCol);
+        return new Tuple<int, int>(snakeComponent.currentIndex.Item1 + iRow, snakeComponent.currentIndex.Item2 + iCol);
     }
     #endregion
-
 }
