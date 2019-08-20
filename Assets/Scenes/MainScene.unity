@@ -150,8 +150,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b646215f1c8d9444c920fae842f7bfb2, type: 2}
   - {fileID: 11400000, guid: b8c23e330a26a574ca4f4610268b056e, type: 2}
   - {fileID: 11400000, guid: ee35fe096760b71499572ed0c2d3dcbf, type: 2}
+  - {fileID: 11400000, guid: 5aad0276e6918954ca5ccfc65782e917, type: 2}
+  - {fileID: 11400000, guid: e8cb070cc01a98e47b58fa2a4a44cacd, type: 2}
   enemyCharacters:
   - {fileID: 11400000, guid: e69f20510fb1c084c978266ff044c1a9, type: 2}
+  - {fileID: 11400000, guid: 1c13608cd07a67e489577db3e7f2112c, type: 2}
+  - {fileID: 11400000, guid: 3a14156204df39647b326787cb891350, type: 2}
+  - {fileID: 11400000, guid: 995c72a26a11db34c8f119ad90e65418, type: 2}
+  - {fileID: 11400000, guid: d88eedcc812e74148873c53851138ac3, type: 2}
+  - {fileID: 11400000, guid: 3facff8e1d5e8fd4ea0a4291e76a7ed8, type: 2}
   items:
   - {fileID: 11400000, guid: c67d08d867b621749a76decc49879657, type: 2}
   - {fileID: 11400000, guid: 4c65e70739a873044bc44bdd2bbc9e14, type: 2}

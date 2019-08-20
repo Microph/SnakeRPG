@@ -74,6 +74,7 @@ public class GameBoard : MonoBehaviour
 
     public void UpdateBoardState()
     {
+        GameManager.Instance.IsInBattle = false;
         Tuple<int, int> toBeIndex = CalculateToBeIndex(_playerCharacterHead, _playerSnakeHead.facingDirectionFromInput);
 
         //Hit map bound
@@ -99,6 +100,7 @@ public class GameBoard : MonoBehaviour
                     MoveAndMakeMeetingCharacterJoinTail(characterInToBeTile, _playerSnakeHead.facingDirectionFromInput, toBeIndex);
                     break;
                 case CharacterSide.Enemy:
+                    GameManager.Instance.IsInBattle = true;
                     CommenceBattle(_playerCharacterHead, characterInToBeTile);
                     
                     if (characterInToBeTile.CurrentHP <= 0)
@@ -129,6 +131,7 @@ public class GameBoard : MonoBehaviour
             _playerCharacterHead.CurrentHP += itemInToBeTile.itemInfoScriptableObject.hpModifier;
             _playerCharacterHead.CurrentShield += itemInToBeTile.itemInfoScriptableObject.shieldModifier;
             MoveSnake(_playerCharacterHead, _playerSnakeHead.facingDirectionFromInput, toBeIndex);
+            Destroy(itemInToBeTile.gameObject);
         }
         //Found Empty tile
         else
@@ -274,6 +277,11 @@ public class GameBoard : MonoBehaviour
     {
         Character newEnemy = ResourceManager.Instance.GenerateEnemy();
         Tile tile = GetARandomUnoccupiedTile();
+        if(tile == null)
+        {
+            return;
+        }
+
         tile.occupiedEntity = newEnemy;
         newEnemy.transform.position = tile.worldPosition;
     }
@@ -282,6 +290,11 @@ public class GameBoard : MonoBehaviour
     {
         Character newHero = ResourceManager.Instance.GenerateHero();
         Tile tile = GetARandomUnoccupiedTile();
+        if (tile == null)
+        {
+            return;
+        }
+
         tile.occupiedEntity = newHero;
         newHero.transform.position = tile.worldPosition;
     }
@@ -290,6 +303,11 @@ public class GameBoard : MonoBehaviour
     {
         Item newItem = ResourceManager.Instance.GenerateItem();
         Tile tile = GetARandomUnoccupiedTile();
+        if (tile == null)
+        {
+            return;
+        }
+
         tile.occupiedEntity = newItem;
         newItem.transform.position = tile.worldPosition;
     }
@@ -314,6 +332,11 @@ public class GameBoard : MonoBehaviour
     public Tile GetARandomUnoccupiedTile()
     {
         var list = GetUnoccupiedTileList();
+        if(list.Count == 0)
+        {
+            return null;
+        }
+
         return list[Random.Range(0, list.Count)];
     }
 

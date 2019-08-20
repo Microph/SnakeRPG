@@ -487,11 +487,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b27a903796fb81e49af74ee94b8eba76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 0}
+  spriteRenderer: {fileID: 4290459168186235431}
   lastMoveFacingDirection: 0
   currentHPText: {fileID: 776561893063591922}
   currentShieldText: {fileID: 4546933002375507015}
   currentATKText: {fileID: 2726886457105098729}
+  itemInfoScriptableObject: {fileID: 0}
 --- !u!1 &6326342317622439043
 GameObject:
   m_ObjectHideFlags: 0

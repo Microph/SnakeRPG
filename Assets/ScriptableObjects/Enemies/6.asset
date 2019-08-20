@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e581990063291c44dbbcfc7008eef3d7, type: 3}
-  m_Name: 2
+  m_Name: 6
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 149b5b122a3c96c47b618d889bde0b07, type: 3}
-  hp: 2
-  shield: 0
-  atk: 2
+  sprite: {fileID: 21300000, guid: 9338ecc345b1ba04198383ce614ac04e, type: 3}
+  hp: 10
+  shield: 2
+  atk: 1
   type: 1

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e581990063291c44dbbcfc7008eef3d7, type: 3}
   m_Name: 2
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 149b5b122a3c96c47b618d889bde0b07, type: 3}
-  hp: 2
+  sprite: {fileID: 21300000, guid: a3f87ed715108e74091364a7ca0d14c9, type: 3}
+  hp: 5
   shield: 0
-  atk: 2
-  type: 1
+  atk: 1
+  type: 2
