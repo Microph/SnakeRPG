@@ -10,23 +10,15 @@ public class UnityEventManager : MonoBehaviour
 
     private void Awake()
     {
-        if (_instance != null && _instance != this)
-        {
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            _instance = this;
-            DontDestroyOnLoad(this.gameObject);
+        _instance = this;
 
-            //Initialize events
-            if(DirectionInputEvent == null)
-            {
-                DirectionInputEvent = new DirectionInputEventClass();
-            }
+        //Initialize events
+        if(DirectionInputEvent == null)
+        {
+            DirectionInputEvent = new DirectionInputEventClass();
         }
     }
-
+    
     public DirectionInputEventClass DirectionInputEvent;
 }
 

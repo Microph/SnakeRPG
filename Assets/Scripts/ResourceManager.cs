@@ -17,15 +17,7 @@ public class ResourceManager : MonoBehaviour
 
     private void Awake()
     {
-        if (_instance != null && _instance != this)
-        {
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            _instance = this;
-            DontDestroyOnLoad(this.gameObject);
-        }
+        _instance = this;
     }
 
     public Character GeneratePlayerSnake(bool isHead, Tuple<int, int> atIndex)

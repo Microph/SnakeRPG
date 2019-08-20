@@ -89,11 +89,11 @@ public class Character : Entity
         base.Setup(characterInfoScriptableObject);
 
         this.characterInfoScriptableObject = characterInfoScriptableObject;
-        this.CurrentCharacterSide = characterSide;
-        this.CurrentType = characterInfoScriptableObject.type;
-        this.CurrentHP = characterInfoScriptableObject.hp;
-        this.CurrentShield = characterInfoScriptableObject.shield;
-        this.CurrentATK = characterInfoScriptableObject.atk;
+        CurrentCharacterSide = characterSide;
+        CurrentType = characterInfoScriptableObject.type;
+        CurrentHP = characterInfoScriptableObject.hp;
+        CurrentShield = characterInfoScriptableObject.shield;
+        CurrentATK = characterInfoScriptableObject.atk;
     }
 }
 

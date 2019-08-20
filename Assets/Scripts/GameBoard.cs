@@ -16,15 +16,7 @@ public class GameBoard : MonoBehaviour
 
     private void Awake()
     {
-        if (_instance != null && _instance != this)
-        {
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            _instance = this;
-            DontDestroyOnLoad(this.gameObject);
-        }
+        _instance = this;
     }
 
     //Must always call first when start game
@@ -48,7 +40,7 @@ public class GameBoard : MonoBehaviour
         //Hit map bound
         if (IsTheIndexOutOfBound(toBeIndex))
         {
-            DestroyHeadAndAssignNextHead(_playerSnakeHead);
+            DestroyHeadAndAssignNextHeadThenCheckGameOver(_playerSnakeHead);
         }
         //Meet a character
         else if (tiles[toBeIndex.Item1, toBeIndex.Item2].occupiedEntity is Character characterInToBeTile)
@@ -80,9 +72,10 @@ public class GameBoard : MonoBehaviour
                     lastPartSnakeComponent.nextLinkedSnakePart = newSnakeComponent;
                     break;
                 case CharacterSide.Enemy:
+                    //
                     break;
                 case CharacterSide.PlayerSnake:
-                    DestroyHeadAndAssignNextHead(_playerSnakeHead);
+                    DestroyHeadAndAssignNextHeadThenCheckGameOver(_playerSnakeHead);
                     break;
             }
         }
@@ -98,7 +91,7 @@ public class GameBoard : MonoBehaviour
         }
     }
 
-    private void DestroyHeadAndAssignNextHead(PlayerSnakeComponent toBeDestroyedPlayerSnakeHead)
+    private void DestroyHeadAndAssignNextHeadThenCheckGameOver(PlayerSnakeComponent toBeDestroyedPlayerSnakeHead)
     {
         //Destroy Head
         tiles[toBeDestroyedPlayerSnakeHead.currentIndex.Item1, toBeDestroyedPlayerSnakeHead.currentIndex.Item2].occupiedEntity = null;
@@ -113,6 +106,10 @@ public class GameBoard : MonoBehaviour
             _playerSnakeHead = toBeNextHead;
             toBeNextHead.IsHead = true;
             _playerSnakeHead.facingDirectionFromInput = toBeDestroyedPlayerSnakeHead.GetComponent<Character>().lastMoveFacingDirection;
+        }
+        else //Game Over
+        {
+            GameManager.Instance.IsGameOver = true;
         }
     }
 

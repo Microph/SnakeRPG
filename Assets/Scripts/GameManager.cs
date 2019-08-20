@@ -8,20 +8,31 @@ public class GameManager : MonoBehaviour
     private static GameManager _instance;
     public static GameManager Instance { get { return _instance; } }
 
+    private bool _isGameOver = false;
     private float _timeIncrementer;
     private float _moveInterval;
 
+    public bool IsGameOver
+    {
+        get => _isGameOver;
+        set
+        {
+            _isGameOver = value;
+            if (_isGameOver)
+            {
+                GameOverEvent();
+            }
+        } 
+    }
+
+    private void GameOverEvent()
+    {
+        throw new NotImplementedException();
+    }
+
     private void Awake()
     {
-        if (_instance != null && _instance != this)
-        {
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            _instance = this;
-            DontDestroyOnLoad(this.gameObject);
-        }
+        _instance = this;
     }
 
     void Start()
@@ -46,6 +57,11 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        if (IsGameOver)
+        {
+            return;
+        }
+
         //Update tick
         _timeIncrementer += Time.deltaTime;
 
