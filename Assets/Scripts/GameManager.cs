@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
 
     public Text scoreText;
     public GameObject gameOverPanel;
+    public GameObject mobileInputs;
 
     private static GameManager _instance;
     public static GameManager Instance { get { return _instance; } }
@@ -117,6 +118,12 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         _instance = this;
+
+#if UNITY_IOS || UNITY_ANDROID
+        mobileInputs.SetActive(true);
+        Screen.orientation = ScreenOrientation.Landscape;
+#endif
+
     }
 
     void Start()
