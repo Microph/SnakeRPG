@@ -1,9 +1,5 @@
 # SnakeRPG
 
-Known issues
-- Player's attack currently always got multiplied by 2
-(I forgot to check same type)
-
 Controls
 - Arrow buttons for controlling the snake
 - [PC: Press UP&DOWN or LEFT&RIGHT] [Mobile: Center Button] to switch snake head
