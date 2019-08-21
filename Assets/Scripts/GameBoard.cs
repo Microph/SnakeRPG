@@ -142,7 +142,7 @@ public class GameBoard : MonoBehaviour
     private void CommenceBattle(Character attacker, Character defender)
     {
         int attackerPoint = attacker.CurrentATK;
-        if (attacker.CurrentCharacterSide == CharacterSide.PlayerSnake)
+        if (attacker.CurrentCharacterSide == CharacterSide.PlayerSnake && attacker.CurrentType == defender.CurrentType)
         {
             attackerPoint *= 2;
         }
