@@ -91,6 +91,6 @@ public class CustomBuildScript
             outputapk = "C:/Users/Microph/Desktop/test-build/test.apk";
         }
 
-        BuildPipeline.BuildPlayer(GetScenePaths(), outputapk, BuildTarget.Android, BuildOptions.AcceptExternalModificationsToPlayer);
+        BuildPipeline.BuildPlayer(GetScenePaths(), outputapk, BuildTarget.Android, BuildOptions.None);
     }
 }
